@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/config"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/config"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"

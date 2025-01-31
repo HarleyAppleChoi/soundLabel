@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/text/language"

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/config"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/config"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
 )
 
 // DotEnvLoadLocalOrSkipTest tries to load the `.env.local` file in the projectroot

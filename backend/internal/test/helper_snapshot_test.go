@@ -7,9 +7,9 @@ import (
 	"regexp"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/test"
-	"allaboutapps.dev/aw/go-starter/internal/test/mocks"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/test"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/test/mocks"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
 
 	"github.com/go-openapi/swag"
 	"github.com/stretchr/testify/mock"

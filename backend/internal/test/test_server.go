@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/api/router"
-	"allaboutapps.dev/aw/go-starter/internal/config"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/router"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/config"
 )
 
 // WithTestServer returns a fully configured server (using the default server config).

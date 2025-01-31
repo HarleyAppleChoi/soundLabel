@@ -5,9 +5,9 @@ import (
 	"errors"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/test"
-	"allaboutapps.dev/aw/go-starter/internal/util/command"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/test"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util/command"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

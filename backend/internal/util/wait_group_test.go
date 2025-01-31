@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
 	"github.com/stretchr/testify/assert"
 )
 

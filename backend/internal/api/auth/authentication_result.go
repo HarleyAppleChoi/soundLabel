@@ -3,7 +3,7 @@ package auth
 import (
 	"time"
 
-	"allaboutapps.dev/aw/go-starter/internal/models"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/models"
 )
 
 type AuthenticationResult struct {

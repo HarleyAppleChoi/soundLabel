@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 
-	"allaboutapps.dev/aw/go-starter/tmp/testdata/types"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/tmp/testdata/types"
 )
 
 // NewPostRefreshRouteParams creates a new PostRefreshRouteParams object

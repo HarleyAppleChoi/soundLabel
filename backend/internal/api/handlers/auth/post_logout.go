@@ -5,12 +5,12 @@ import (
 	"errors"
 	"net/http"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/api/auth"
-	"allaboutapps.dev/aw/go-starter/internal/models"
-	"allaboutapps.dev/aw/go-starter/internal/types"
-	"allaboutapps.dev/aw/go-starter/internal/util"
-	"allaboutapps.dev/aw/go-starter/internal/util/db"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/auth"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/models"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/types"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util/db"
 	"github.com/labstack/echo/v4"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )

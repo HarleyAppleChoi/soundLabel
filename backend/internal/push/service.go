@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"errors"
 
-	"allaboutapps.dev/aw/go-starter/internal/models"
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/models"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
 )
 
 type ProviderType string

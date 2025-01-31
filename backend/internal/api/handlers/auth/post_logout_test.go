@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/api/httperrors"
-	"allaboutapps.dev/aw/go-starter/internal/api/middleware"
-	"allaboutapps.dev/aw/go-starter/internal/test"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/httperrors"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/middleware"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/test"
 	"github.com/stretchr/testify/assert"
 )
 

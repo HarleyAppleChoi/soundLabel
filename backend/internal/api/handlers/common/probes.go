@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"allaboutapps.dev/aw/go-starter/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
 	"golang.org/x/sys/unix"
 )
 

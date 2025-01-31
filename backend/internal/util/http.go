@@ -9,8 +9,8 @@ import (
 	"mime/multipart"
 	"net/http"
 
-	"allaboutapps.dev/aw/go-starter/internal/api/httperrors"
-	"allaboutapps.dev/aw/go-starter/internal/types"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/httperrors"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/types"
 	"github.com/gabriel-vasile/mimetype"
 	oerrors "github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"

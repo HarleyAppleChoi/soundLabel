@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"allaboutapps.dev/aw/go-starter/cmd/db"
-	"allaboutapps.dev/aw/go-starter/cmd/env"
-	"allaboutapps.dev/aw/go-starter/cmd/probe"
-	"allaboutapps.dev/aw/go-starter/cmd/server"
-	"allaboutapps.dev/aw/go-starter/internal/config"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/cmd/db"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/cmd/env"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/cmd/probe"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/cmd/server"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/config"
 	"github.com/spf13/cobra"
 )
 

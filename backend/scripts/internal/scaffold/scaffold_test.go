@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/test"
-	"allaboutapps.dev/aw/go-starter/internal/util"
-	"allaboutapps.dev/aw/go-starter/scripts/internal/scaffold"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/test"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/scripts/internal/scaffold"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -3,8 +3,8 @@ package common
 import (
 	"path/filepath"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/api/middleware"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/middleware"
 	"github.com/labstack/echo/v4"
 )
 

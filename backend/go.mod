@@ -1,4 +1,4 @@
-module allaboutapps.dev/aw/go-starter
+module github.com/HarleyAppleChoi/interview-polyAI/backend
 
 go 1.22.4
 

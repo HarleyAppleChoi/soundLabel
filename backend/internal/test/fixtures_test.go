@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"testing"
 
-	"allaboutapps.dev/aw/go-starter/internal/models"
-	"allaboutapps.dev/aw/go-starter/internal/test"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/models"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/test"
 	_ "github.com/lib/pq"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"

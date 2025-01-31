@@ -14,10 +14,10 @@ import (
 	"strings"
 	"sync"
 
-	"allaboutapps.dev/aw/go-starter/internal/api"
-	"allaboutapps.dev/aw/go-starter/internal/api/router"
-	"allaboutapps.dev/aw/go-starter/internal/config"
-	"allaboutapps.dev/aw/go-starter/internal/types"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/api/router"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/config"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/types"
 	"github.com/rs/zerolog"
 )
 

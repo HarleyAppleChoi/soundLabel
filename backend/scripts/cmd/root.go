@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"allaboutapps.dev/aw/go-starter/scripts/internal/util"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/scripts/internal/util"
 	"github.com/spf13/cobra"
 )
 

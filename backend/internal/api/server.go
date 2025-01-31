@@ -8,12 +8,12 @@ import (
 	"net/http"
 	"time"
 
-	"allaboutapps.dev/aw/go-starter/internal/config"
-	"allaboutapps.dev/aw/go-starter/internal/i18n"
-	"allaboutapps.dev/aw/go-starter/internal/mailer"
-	"allaboutapps.dev/aw/go-starter/internal/mailer/transport"
-	"allaboutapps.dev/aw/go-starter/internal/push"
-	"allaboutapps.dev/aw/go-starter/internal/push/provider"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/config"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/i18n"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/mailer"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/mailer/transport"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/push"
+	"github.com/HarleyAppleChoi/interview-polyAI/backend/internal/push/provider"
 	"github.com/labstack/echo/v4"
 	"github.com/rs/zerolog/log"
 
