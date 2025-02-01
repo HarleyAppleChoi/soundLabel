@@ -1,1 +1,0 @@
-(string) (len=55) "SELECT * FROM \"users\" WHERE (users.profile::text = $1);"

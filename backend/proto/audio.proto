@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package audio;
+option go_package = "my-project/backend/proto";
+
+// Service definition
+service AudioService {
+  // Get audio segments for a specific recording
+  rpc GetAudioSegments(GetAudioSegmentsRequest) returns (GetAudioSegmentsResponse) {}
+  // Stream audio file data
+  rpc StreamAudio(AudioRequest) returns (stream AudioResponse) {}
+}
+
+// Request for getting segments
+message GetAudioSegmentsRequest {
+  string recording_id = 1;
+}
+
+// Response containing segments
+message GetAudioSegmentsResponse {
+  repeated AudioSegment segments = 1;
+}
+
+// Single audio segment
+message AudioSegment {
+  string recording_id = 1;
+  double start_time = 2;
+  double end_time = 3;
+  string transcript = 4;
+}
+
+// Request for streaming audio
+message AudioRequest {
+  string recording_id = 1;
+}
+
+// Response containing audio chunks
+message AudioResponse {
+  bytes chunk = 1;

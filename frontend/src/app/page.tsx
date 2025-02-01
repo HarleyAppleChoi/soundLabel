@@ -1,12 +1,20 @@
-import Homepage from '@/components/Homepage';
+'use client';
 
-import { getApiResponse } from '@/utils/shared/get-api-response';
+import { Box, Container, Typography } from '@mui/material';
+import AudioPlayer from '@/components/AudioPlayer';
 
-import { NpmData, PageParams } from '@/types';
-import AnnotationTool from '@/components/annotation/annotation';
+export default function Home() {
+  // Using one of the recording IDs from our dataset
+  const sampleRecordingId = '9ea7b591-2331-4f35-a4ce-96d404f1e019';
 
-const AppHome = async ({ searchParams }: PageParams) => {
-  return <AnnotationTool />
-};
-
-export default AppHome;
+  return (
+    <Container maxWidth="lg">
+      <Box sx={{ my: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Audio Transcription Player
+        </Typography>
+        <AudioPlayer recordingId={sampleRecordingId} />
+      </Box>
+    </Container>
+  );
+}

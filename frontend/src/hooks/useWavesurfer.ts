@@ -2,30 +2,45 @@ import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 
 interface WavesurferHookProps {
-  audioUrl: string;
-  container: string;
+  container: React.RefObject<HTMLDivElement>;
+  url: string;
+  height: number;
+  waveColor: string;
+  progressColor: string;
+  cursorColor: string;
+  normalize: boolean;
 }
 
-export const useWavesurfer = ({ audioUrl, container }: WavesurferHookProps) => {
+export const useWavesurfer = ({
+  container,
+  url,
+  height,
+  waveColor,
+  progressColor,
+  cursorColor,
+  normalize,
+}: WavesurferHookProps) => {
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
 
   useEffect(() => {
-    if (!audioUrl) return;
+    if (!url) return;
+
+    if (!container.current) return;
 
     const wavesurfer = WaveSurfer.create({
-      container: `#${container}`,
-      waveColor: '#4a9eff',
-      progressColor: '#1976d2',
-      height: 100,
-      normalize: true,
-      backend: 'WebAudio',
+      container: container.current,
+      height,
+      waveColor,
+      progressColor,
+      cursorColor,
+      normalize,
     });
 
     wavesurferRef.current = wavesurfer;
 
-    wavesurfer.load(audioUrl);
+    wavesurfer.load(url);
 
     wavesurfer.on('ready', () => {
       setDuration(wavesurfer.getDuration());
@@ -38,7 +53,7 @@ export const useWavesurfer = ({ audioUrl, container }: WavesurferHookProps) => {
     return () => {
       wavesurfer.destroy();
     };
-  }, [audioUrl, container]);
+  }, [url, container]);
 
   const togglePlayPause = () => {
     if (wavesurferRef.current) {
@@ -55,6 +70,7 @@ export const useWavesurfer = ({ audioUrl, container }: WavesurferHookProps) => {
 
   return {
     wavesurfer: wavesurferRef.current,
+    setIsPlaying,
     isPlaying,
     duration,
     togglePlayPause,
