@@ -23,9 +23,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 interface AudioPlayerProps {
   recordingId: string;
+  setSubmitted: (submitted: boolean)=>void;
 }
 
-export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
+export default function AudioPlayer({ recordingId,setSubmitted }: AudioPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [segments, setSegments] = useState<AudioSegment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,6 +78,7 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
     fetchSegments();
   }, [recordingId]);
 
+
   const handleSegmentClick = (startTime: number) => {
     if (wavesurfer) {
       seekTo(startTime);
@@ -98,6 +100,33 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
     newSegments[index].label = label;
     setSegments(newSegments);
   };
+
+  const submitLabels = async () => {
+    try {
+      setIsSubmitting(true);
+      const response = await axios.post(`${API_BASE_URL}/api/segments/labels`, {
+        recordingId,
+        segments: segments.map(segment => ({
+        recordingId: segment.recordingId,
+        startTime: segment.startTime,
+        endTime: segment.endTime,
+        transcript: segment.transcript,
+        label: segment.label
+        }))
+      }, {
+        headers: {
+        'Content-Type': 'application/json',
+        }
+      });
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to submit labels');
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+    }
+  }
+
 
 
   if (error) {
@@ -163,6 +192,7 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
                   <ListItemText
                     primary={segment.transcript}
                     secondary={`${segment.startTime.toFixed(2)}s - ${segment.endTime.toFixed(2)}s`}
+                    sx={{ flex: 1 }} // Allow text to wrap
                   />
                   <Box sx={{ ml: 2 }}>
                     <Button
@@ -205,29 +235,7 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
             color="primary"
             size="large"
             disabled={isSubmitting}
-            onClick={async () => {
-              try {
-                setIsSubmitting(true);
-                const response = await axios.post(`${API_BASE_URL}/api/segments/labels`, {
-                  recordingId,
-                  segments: segments.map(segment => ({
-                  recordingId: segment.recordingId,
-                  startTime: segment.startTime,
-                  endTime: segment.endTime,
-                  transcript: segment.transcript,
-                  label: segment.label
-                  }))
-                }, {
-                  headers: {
-                  'Content-Type': 'application/json',
-                  }
-                });
-              } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to submit labels');
-              } finally {
-                setIsSubmitting(false);
-              }
-            }}
+            onClick={submitLabels}
           >
             {isSubmitting ? (
               <>

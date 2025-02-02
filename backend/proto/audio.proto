@@ -14,6 +14,14 @@ service AudioService {
 
     // Ping server
     rpc Ping(PingRequest) returns (PingResponse) {}
+    rpc GetAudioQueue(GetAudioQueueRequest) returns (GetAudioQueueResponse) {}
+}
+
+message GetAudioQueueRequest {
+}
+
+message GetAudioQueueResponse {
+    repeated string recording_ids = 1;
 }
 
 message PingRequest{

@@ -23,6 +23,7 @@ const (
 	AudioService_StreamAudio_FullMethodName         = "/audio.AudioService/StreamAudio"
 	AudioService_UpdateSegmentLabels_FullMethodName = "/audio.AudioService/UpdateSegmentLabels"
 	AudioService_Ping_FullMethodName                = "/audio.AudioService/Ping"
+	AudioService_GetAudioQueue_FullMethodName       = "/audio.AudioService/GetAudioQueue"
 )
 
 // AudioServiceClient is the client API for AudioService service.
@@ -37,6 +38,7 @@ type AudioServiceClient interface {
 	UpdateSegmentLabels(ctx context.Context, in *UpdateSegmentLabelsRequest, opts ...grpc.CallOption) (*UpdateSegmentLabelsResponse, error)
 	// Ping server
 	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	GetAudioQueue(ctx context.Context, in *GetAudioQueueRequest, opts ...grpc.CallOption) (*GetAudioQueueResponse, error)
 }
 
 type audioServiceClient struct {
@@ -106,6 +108,15 @@ func (c *audioServiceClient) Ping(ctx context.Context, in *PingRequest, opts ...
 	return out, nil
 }
 
+func (c *audioServiceClient) GetAudioQueue(ctx context.Context, in *GetAudioQueueRequest, opts ...grpc.CallOption) (*GetAudioQueueResponse, error) {
+	out := new(GetAudioQueueResponse)
+	err := c.cc.Invoke(ctx, AudioService_GetAudioQueue_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AudioServiceServer is the server API for AudioService service.
 // All implementations must embed UnimplementedAudioServiceServer
 // for forward compatibility
@@ -118,6 +129,7 @@ type AudioServiceServer interface {
 	UpdateSegmentLabels(context.Context, *UpdateSegmentLabelsRequest) (*UpdateSegmentLabelsResponse, error)
 	// Ping server
 	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	GetAudioQueue(context.Context, *GetAudioQueueRequest) (*GetAudioQueueResponse, error)
 	mustEmbedUnimplementedAudioServiceServer()
 }
 
@@ -136,6 +148,9 @@ func (UnimplementedAudioServiceServer) UpdateSegmentLabels(context.Context, *Upd
 }
 func (UnimplementedAudioServiceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedAudioServiceServer) GetAudioQueue(context.Context, *GetAudioQueueRequest) (*GetAudioQueueResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAudioQueue not implemented")
 }
 func (UnimplementedAudioServiceServer) mustEmbedUnimplementedAudioServiceServer() {}
 
@@ -225,6 +240,24 @@ func _AudioService_Ping_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AudioService_GetAudioQueue_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAudioQueueRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AudioServiceServer).GetAudioQueue(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AudioService_GetAudioQueue_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AudioServiceServer).GetAudioQueue(ctx, req.(*GetAudioQueueRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AudioService_ServiceDesc is the grpc.ServiceDesc for AudioService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -243,6 +276,10 @@ var AudioService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _AudioService_Ping_Handler,
+		},
+		{
+			MethodName: "GetAudioQueue",
+			Handler:    _AudioService_GetAudioQueue_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

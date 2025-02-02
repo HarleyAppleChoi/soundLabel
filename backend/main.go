@@ -17,17 +17,35 @@ import (
 
 type audioServer struct {
 	pb.UnimplementedAudioServiceServer
-	segments map[string][]*pb.AudioSegment
+	segments   map[string][]*pb.AudioSegment
+	audioQueue []string
 }
 
 func newServer() *audioServer {
 	server := &audioServer{
-		segments: make(map[string][]*pb.AudioSegment),
+		segments:   make(map[string][]*pb.AudioSegment),
+		audioQueue: []string{}, // Initialize audioQueue
 	}
 	if err := server.loadSegments("resources/segments.csv"); err != nil {
 		log.Fatalf("Failed to load segments: %v", err)
 	}
+	server.loadAudioQueue("resources/audio")
 	return server
+}
+
+
+func (s *audioServer) loadAudioQueue(dir string) error {
+	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() && filepath.Ext(path) == ".wav" {
+			filename := filepath.Base(path)
+			recordingID := filename[:len(filename)-len(filepath.Ext(filename))] // Remove extension
+			s.audioQueue = append(s.audioQueue, recordingID)
+		}
+		return nil
+	})
 }
 
 func (s *audioServer) loadSegments(filename string) error {
@@ -181,6 +199,14 @@ func (s *audioServer) StreamAudio(req *pb.AudioRequest, stream pb.AudioService_S
 
 	return nil
 }
+
+// GetAudioQueue implements audio.AudioServiceServer.GetAudioQueue
+func (s *audioServer) GetAudioQueue(ctx context.Context, req *pb.GetAudioQueueRequest) (*pb.GetAudioQueueResponse, error) {
+	return &pb.GetAudioQueueResponse{
+		RecordingIds: s.audioQueue,
+	}, nil
+}
+
 
 // Ping implements audio.AudioServiceServer.Ping
 func (s *audioServer) Ping(ctx context.Context, in *pb.PingRequest) (*pb.PingResponse, error) {

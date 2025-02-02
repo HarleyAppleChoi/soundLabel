@@ -11,6 +11,13 @@ import { map } from "rxjs/operators";
 
 export const protobufPackage = "audio";
 
+export interface GetAudioQueueRequest {
+}
+
+export interface GetAudioQueueResponse {
+  recordingIds: string[];
+}
+
 export interface PingRequest {
   pingRequest: string;
 }
@@ -61,7 +68,114 @@ export interface UpdateSegmentLabelsRequest {
 
 /** Response for updating segment labels (currently empty) */
 export interface UpdateSegmentLabelsResponse {
+  success: boolean;
+  message: string;
 }
+
+function createBaseGetAudioQueueRequest(): GetAudioQueueRequest {
+  return {};
+}
+
+export const GetAudioQueueRequest: MessageFns<GetAudioQueueRequest> = {
+  encode(_: GetAudioQueueRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAudioQueueRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAudioQueueRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(_: any): GetAudioQueueRequest {
+    return {};
+  },
+
+  toJSON(_: GetAudioQueueRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAudioQueueRequest>, I>>(base?: I): GetAudioQueueRequest {
+    return GetAudioQueueRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAudioQueueRequest>, I>>(_: I): GetAudioQueueRequest {
+    const message = createBaseGetAudioQueueRequest();
+    return message;
+  },
+};
+
+function createBaseGetAudioQueueResponse(): GetAudioQueueResponse {
+  return { recordingIds: [] };
+}
+
+export const GetAudioQueueResponse: MessageFns<GetAudioQueueResponse> = {
+  encode(message: GetAudioQueueResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.recordingIds) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAudioQueueResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAudioQueueResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.recordingIds.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAudioQueueResponse {
+    return {
+      recordingIds: globalThis.Array.isArray(object?.recordingIds)
+        ? object.recordingIds.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetAudioQueueResponse): unknown {
+    const obj: any = {};
+    if (message.recordingIds?.length) {
+      obj.recordingIds = message.recordingIds;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAudioQueueResponse>, I>>(base?: I): GetAudioQueueResponse {
+    return GetAudioQueueResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAudioQueueResponse>, I>>(object: I): GetAudioQueueResponse {
+    const message = createBaseGetAudioQueueResponse();
+    message.recordingIds = object.recordingIds?.map((e) => e) || [];
+    return message;
+  },
+};
 
 function createBasePingRequest(): PingRequest {
   return { pingRequest: "" };
@@ -618,11 +732,17 @@ export const UpdateSegmentLabelsRequest: MessageFns<UpdateSegmentLabelsRequest> 
 };
 
 function createBaseUpdateSegmentLabelsResponse(): UpdateSegmentLabelsResponse {
-  return {};
+  return { success: false, message: "" };
 }
 
 export const UpdateSegmentLabelsResponse: MessageFns<UpdateSegmentLabelsResponse> = {
-  encode(_: UpdateSegmentLabelsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(message: UpdateSegmentLabelsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    if (message.message !== "") {
+      writer.uint32(18).string(message.message);
+    }
     return writer;
   },
 
@@ -633,6 +753,22 @@ export const UpdateSegmentLabelsResponse: MessageFns<UpdateSegmentLabelsResponse
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 8) {
+            break;
+          }
+
+          message.success = reader.bool();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -642,20 +778,31 @@ export const UpdateSegmentLabelsResponse: MessageFns<UpdateSegmentLabelsResponse
     return message;
   },
 
-  fromJSON(_: any): UpdateSegmentLabelsResponse {
-    return {};
+  fromJSON(object: any): UpdateSegmentLabelsResponse {
+    return {
+      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
+    };
   },
 
-  toJSON(_: UpdateSegmentLabelsResponse): unknown {
+  toJSON(message: UpdateSegmentLabelsResponse): unknown {
     const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
     return obj;
   },
 
   create<I extends Exact<DeepPartial<UpdateSegmentLabelsResponse>, I>>(base?: I): UpdateSegmentLabelsResponse {
     return UpdateSegmentLabelsResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<UpdateSegmentLabelsResponse>, I>>(_: I): UpdateSegmentLabelsResponse {
+  fromPartial<I extends Exact<DeepPartial<UpdateSegmentLabelsResponse>, I>>(object: I): UpdateSegmentLabelsResponse {
     const message = createBaseUpdateSegmentLabelsResponse();
+    message.success = object.success ?? false;
+    message.message = object.message ?? "";
     return message;
   },
 };
@@ -670,6 +817,7 @@ export interface AudioService {
   UpdateSegmentLabels(request: UpdateSegmentLabelsRequest): Promise<UpdateSegmentLabelsResponse>;
   /** Ping server */
   Ping(request: PingRequest): Promise<PingResponse>;
+  GetAudioQueue(request: GetAudioQueueRequest): Promise<GetAudioQueueResponse>;
 }
 
 export const AudioServiceServiceName = "audio.AudioService";
@@ -683,6 +831,7 @@ export class AudioServiceClientImpl implements AudioService {
     this.StreamAudio = this.StreamAudio.bind(this);
     this.UpdateSegmentLabels = this.UpdateSegmentLabels.bind(this);
     this.Ping = this.Ping.bind(this);
+    this.GetAudioQueue = this.GetAudioQueue.bind(this);
   }
   GetAudioSegments(request: GetAudioSegmentsRequest): Promise<GetAudioSegmentsResponse> {
     const data = GetAudioSegmentsRequest.encode(request).finish();
@@ -706,6 +855,12 @@ export class AudioServiceClientImpl implements AudioService {
     const data = PingRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "Ping", data);
     return promise.then((data) => PingResponse.decode(new BinaryReader(data)));
+  }
+
+  GetAudioQueue(request: GetAudioQueueRequest): Promise<GetAudioQueueResponse> {
+    const data = GetAudioQueueRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetAudioQueue", data);
+    return promise.then((data) => GetAudioQueueResponse.decode(new BinaryReader(data)));
   }
 }
 

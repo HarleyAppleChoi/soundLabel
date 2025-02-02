@@ -12,34 +12,6 @@ export async function GET(request: NextRequest) {
   if (!recordingId) {
     return NextResponse.json({ error: 'Recording ID is required' }, { status: 400 });
   }
-
-  /*
-  try {
-    const csvPath = path.join(process.cwd(), '..', 'backend', 'resources', 'segments.csv');
-    const csvContent = fs.readFileSync(csvPath, 'utf-8');
-    
-    const records = parse(csvContent, {
-      columns: true,
-      skip_empty_lines: true
-    });
-
-    const segments: AudioSegment[] = records
-      .filter((record: any) => record.recording_id === recordingId)
-      .map((record: any) => ({
-        recordingId: record.recording_id,
-        startTime: parseFloat(record.start),
-        endTime: parseFloat(record.end),
-        transcript: record.transcript
-      }));
-
-    return NextResponse.json({ segments });
-  } catch (error) {
-    console.error('Error reading segments:', error);
-    return NextResponse.json(
-      { error: 'Failed to read segments' },
-      { status: 500 }
-    );
-  }*/
     try {
         const pd = protoLoader.loadSync(process.cwd() + '/../backend/proto/audio.proto');
         const protoDescriptor = grpc.loadPackageDefinition(pd);

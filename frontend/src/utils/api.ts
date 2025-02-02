@@ -63,4 +63,13 @@ export const api = {
     }
     return response.json();
   },
+
+  async getAudioQueue(): Promise<string[]> {
+    const response = await axios.get(`${API_BASE_URL}/api/audio/queue`);
+    if (response.status !== 200) {
+      throw new Error('Failed to get audio queue');
+    }
+    console.log(response);
+    return response.data.data;
+  },
 };
