@@ -87,6 +87,7 @@ func (s *audioServer) GetAudioSegments(ctx context.Context, req *pb.GetAudioSegm
 	if !ok {
 		return nil, fmt.Errorf("no segments found for recording ID: %s", req.RecordingId)
 	}
+	fmt.Println(segments)
 
 	return &pb.GetAudioSegmentsResponse{
 		Segments: segments,

@@ -60,12 +60,9 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
   useEffect(() => {
     async function fetchSegments() {
       try {
-        const response = await fetch(`/api/segments?recordingId=${recordingId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch segments');
-        }
-        const data = await response.json();
-        const segmentsWithLabels = data.segments.map((segment: AudioSegment) => ({
+        const response = await axios.get(`/api/segments?recordingId=${recordingId}`);
+        console.log(response)
+        const segmentsWithLabels = response.data.segments.map((segment: AudioSegment) => ({
           ...segment,
           label: '' // Initialize label to empty string
         }));
