@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { useWavesurfer } from '@/hooks/useWavesurfer';
-import type { AudioSegment } from '@/types/audio';
+import type { AudioSegment, SegmentLabel } from '@/types/audio';
+import { api } from '@/utils/api';
 import {
   Box,
   Button,
@@ -14,9 +15,11 @@ import {
   ListItemText,
   Paper,
   Typography,
-  Stack
+  Stack,
 } from '@mui/material';
 import { PlayArrow, Pause, Stop } from '@mui/icons-material';
+import axios from 'axios';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 interface AudioPlayerProps {
   recordingId: string;
@@ -28,6 +31,7 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     wavesurfer,
@@ -61,7 +65,11 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
           throw new Error('Failed to fetch segments');
         }
         const data = await response.json();
-        setSegments(data.segments);
+        const segmentsWithLabels = data.segments.map((segment: AudioSegment) => ({
+          ...segment,
+          label: '' // Initialize label to empty string
+        }));
+        setSegments(segmentsWithLabels);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch segments');
       } finally {
@@ -86,6 +94,14 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
       wavesurfer.stop();
     }
   };
+
+
+  const handleLabelChange = (index: number, label: SegmentLabel) => {
+    const newSegments = [...segments];
+    newSegments[index].label = label;
+    setSegments(newSegments);
+  };
+
 
   if (error) {
     return (
@@ -142,19 +158,90 @@ export default function AudioPlayer({ recordingId }: AudioPlayerProps) {
                     bgcolor: currentTime >= segment.startTime && currentTime <= segment.endTime
                       ? 'primary.light'
                       : 'background.paper',
+                    display: 'flex', // Enable flexbox for alignment
+                    justifyContent: 'space-between', // Distribute space between text and buttons
+                    alignItems: 'center', // Vertically align items
                   }}
                 >
                   <ListItemText
                     primary={segment.transcript}
                     secondary={`${segment.startTime.toFixed(2)}s - ${segment.endTime.toFixed(2)}s`}
                   />
+                  <Box sx={{ ml: 2 }}>
+                    <Button
+                      size="small"
+                      variant={segment.label === 'noise' ? 'contained' : 'outlined'}
+                      color="error"
+                      onClick={() => handleLabelChange(index, 'noise')}
+                      sx={{ mr: 1 }}
+                    >
+                      Noise
+                    </Button>
+                    <Button
+                      size="small"
+                      variant={segment.label === 'silence' ? 'contained' : 'outlined'}
+                      color="warning"
+                      onClick={() => handleLabelChange(index, 'silence')}
+                      sx={{ mr: 1 }}
+                    >
+                      Silence
+                    </Button>
+                    <Button
+                      size="small"
+                      variant={segment.label === 'speech' ? 'contained' : 'outlined'}
+                      color="success"
+                      onClick={() => handleLabelChange(index, 'speech')}
+                    >
+                      Speech
+                    </Button>
+                  </Box>
                 </ListItemButton>
               ))}
             </List>
           )}
         </CardContent>
         </Card>
+        
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            disabled={isSubmitting}
+            onClick={async () => {
+              try {
+                setIsSubmitting(true);
+                const response = await axios.post(`${API_BASE_URL}/api/segments/labels`, {
+                  recordingId,
+                  segments: segments.map(segment => ({
+                  recordingId: segment.recordingId,
+                  startTime: segment.startTime,
+                  endTime: segment.endTime,
+                  transcript: segment.transcript,
+                  label: segment.label
+                  }))
+                }, {
+                  headers: {
+                  'Content-Type': 'application/json',
+                  }
+                });
+              } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to submit labels');
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
+          >
+            {isSubmitting ? (
+              <>
+                <CircularProgress size={24} sx={{ mr: 1 }} />
+                Submitting...
+              </>
+            ) : (
+              'Submit Labels'
+            )}
+          </Button>
+        </Box>
       </Box>
   );
 }
-

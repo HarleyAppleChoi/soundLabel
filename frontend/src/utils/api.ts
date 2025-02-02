@@ -1,13 +1,9 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+"use client"
 
-export interface AudioSegment {
-  id: string;
-  audioId: string;
-  startTime: string;
-  endTime: string;
-  transcript: string;
-  label: 'noise' | 'silence' | 'speech' | null;
-}
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+
+import type { AudioSegment } from '@/types/audio';
+import axios from 'axios';
 
 export interface AnnotationRequest {
   segments: {
@@ -41,5 +37,30 @@ export const api = {
     if (!response.ok) {
       throw new Error('Failed to save annotations');
     }
+  },
+
+  async updateSegmentLabels(recordingId: string, segments: AudioSegment[]): Promise<void> {
+    const response = axios.post(`${API_BASE_URL}/api/segments/labels`, {
+      recordingId,
+      segments: segments.map(segment => ({
+      recordingId: segment.recordingId,
+      startTime: segment.startTime,
+      endTime: segment.endTime,
+      transcript: segment.transcript,
+      label: segment.label
+      }))
+    }, {
+      headers: {
+      'Content-Type': 'application/json',
+      }
+    });
+  },
+
+  async ping(): Promise<{ message: string }> {
+    const response = await fetch(`${API_BASE_URL}/api/ping`);
+    if (!response.ok) {
+      throw new Error('Failed to ping server');
+    }
+    return response.json();
   },
 };

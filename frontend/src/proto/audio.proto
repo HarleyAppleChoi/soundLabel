@@ -11,17 +11,6 @@ service AudioService {
     rpc StreamAudio(AudioRequest) returns (stream AudioResponse) {}
     // Update segment labels
     rpc UpdateSegmentLabels(UpdateSegmentLabelsRequest) returns (UpdateSegmentLabelsResponse) {}
-
-    // Ping server
-    rpc Ping(PingRequest) returns (PingResponse) {}
-}
-
-message PingRequest{
-    string pingRequest = 1;
-}
-
-message PingResponse{
-    string pingResponse = 1;
 }
 
 // Request for getting segments
@@ -62,6 +51,4 @@ message UpdateSegmentLabelsRequest {
 
 // Response for updating segment labels (currently empty)
 message UpdateSegmentLabelsResponse {
-    bool success = 1;
-    string message = 2;
 }

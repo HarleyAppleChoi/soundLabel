@@ -62,6 +62,4 @@ message UpdateSegmentLabelsRequest {
 
 // Response for updating segment labels (currently empty)
 message UpdateSegmentLabelsResponse {
-    bool success = 1;
-    string message = 2;
 }
