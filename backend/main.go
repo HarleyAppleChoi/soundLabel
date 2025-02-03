@@ -15,12 +15,14 @@ import (
 	"google.golang.org/grpc"
 )
 
+// audioServer is used to implement audio.AudioServiceServer.
 type audioServer struct {
 	pb.UnimplementedAudioServiceServer
 	segments   map[string][]*pb.AudioSegment
 	audioQueue []string
 }
 
+// newServer creates a new audio server instance.
 func newServer() *audioServer {
 	server := &audioServer{
 		segments:   make(map[string][]*pb.AudioSegment),
@@ -33,7 +35,7 @@ func newServer() *audioServer {
 	return server
 }
 
-
+// loadAudioQueue loads all audio files in the given directory.
 func (s *audioServer) loadAudioQueue(dir string) error {
 	return filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -48,6 +50,7 @@ func (s *audioServer) loadAudioQueue(dir string) error {
 	})
 }
 
+// loadSegments loads audio segments from a CSV file.
 func (s *audioServer) loadSegments(filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -100,6 +103,7 @@ func (s *audioServer) loadSegments(filename string) error {
 	return nil
 }
 
+// GetAudioSegments implements audio.AudioServiceServer.GetAudioSegments
 func (s *audioServer) GetAudioSegments(ctx context.Context, req *pb.GetAudioSegmentsRequest) (*pb.GetAudioSegmentsResponse, error) {
 	segments, ok := s.segments[req.RecordingId]
 	if !ok {
@@ -112,6 +116,7 @@ func (s *audioServer) GetAudioSegments(ctx context.Context, req *pb.GetAudioSegm
 	}, nil
 }
 
+// UpdateSegmentLabels implements audio.AudioServiceServer.UpdateSegmentLabels
 func (s *audioServer) UpdateSegmentLabels(ctx context.Context, req *pb.UpdateSegmentLabelsRequest) (*pb.UpdateSegmentLabelsResponse, error) {
 	// Get existing segments for the recording
 	_, ok := s.segments[req.RecordingId]
@@ -170,6 +175,7 @@ func (s *audioServer) UpdateSegmentLabels(ctx context.Context, req *pb.UpdateSeg
 	}, nil
 }
 
+// StreamAudio implements audio.AudioServiceServer.StreamAudio
 func (s *audioServer) StreamAudio(req *pb.AudioRequest, stream pb.AudioService_StreamAudioServer) error {
 	audioPath := filepath.Join("resources/audio", req.RecordingId+".wav")
 	file, err := os.Open(audioPath)
@@ -200,13 +206,12 @@ func (s *audioServer) StreamAudio(req *pb.AudioRequest, stream pb.AudioService_S
 	return nil
 }
 
-// GetAudioQueue implements audio.AudioServiceServer.GetAudioQueue
+// GetAudioQueue return the list of audio files in the queue
 func (s *audioServer) GetAudioQueue(ctx context.Context, req *pb.GetAudioQueueRequest) (*pb.GetAudioQueueResponse, error) {
 	return &pb.GetAudioQueueResponse{
 		RecordingIds: s.audioQueue,
 	}, nil
 }
-
 
 // Ping implements audio.AudioServiceServer.Ping
 func (s *audioServer) Ping(ctx context.Context, in *pb.PingRequest) (*pb.PingResponse, error) {

@@ -5,8 +5,13 @@ import * as protoLoader from '@grpc/proto-loader'
 import { GetAudioSegmentsRequest, GetAudioSegmentsResponse } from '@/proto/audio';
 import { AudioRequest, AudioResponse } from 'audio';
 import { DataArrayRounded } from '@mui/icons-material';
+import client from '../utils/grpcClient';
 
-
+/**
+ * 
+ * @param request recordingId that the audio is associated with
+ * @returns the audio segments from the server
+ */
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const recordingId = searchParams.get('recordingId');
@@ -14,15 +19,13 @@ export async function GET(request: NextRequest) {
   if (!recordingId) {
     return NextResponse.json({ error: 'Recording ID is required' }, { status: 400 });
   }
-  
+
    try{
   let audioChunks: Uint8Array[] = [];
-  const pd = protoLoader.loadSync(process.cwd() + '/../backend/proto/audio.proto');
-  const protoDescriptor = grpc.loadPackageDefinition(pd);
-  const AudioService = (protoDescriptor as any).audio.AudioService;
-  const client = new AudioService("localhost:50051", grpc.credentials.createInsecure());
+    const grpcClient = client.getClient();
 
-const call = client.StreamAudio({ recordingId: recordingId } as AudioRequest);
+
+const call = grpcClient.StreamAudio({ recordingId: recordingId } as AudioRequest);
 
 const response = await new Promise<NextResponse>((resolve, reject) => {
     call.on('data', function(data: AudioResponse) {

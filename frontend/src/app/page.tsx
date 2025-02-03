@@ -18,12 +18,13 @@ export default function Home() {
     }
     api.getAudioQueue().then((queue) => {
       context.setQueue(queue);
+      console.log(queue)
+      context.setQueueSize(queue.length);
       setFirstLoaded(true);
     }
     );
   }
   , []);
-
 
   if (firstLoaded === false){
     return (

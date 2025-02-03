@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package audio;
+option go_package = "my-project/backend/proto";
+
+// Service definition
+service AudioService {
+    // Get audio segments for a specific recording
+    rpc GetAudioSegments(GetAudioSegmentsRequest) returns (GetAudioSegmentsResponse) {}
+    // Stream audio file data
+    rpc StreamAudio(AudioRequest) returns (stream AudioResponse) {}
+    // Update segment labels
+    rpc UpdateSegmentLabels(UpdateSegmentLabelsRequest) returns (UpdateSegmentLabelsResponse) {}
+
+    // Ping server
+    rpc Ping(PingRequest) returns (PingResponse) {}
+    rpc GetAudioQueue(GetAudioQueueRequest) returns (GetAudioQueueResponse) {}
+}
+
+message GetAudioQueueRequest {
+}
+
+message GetAudioQueueResponse {
+    repeated string recording_ids = 1;
+}
+
+message PingRequest{
+    string pingRequest = 1;
+}
+
+message PingResponse{
+    string pingResponse = 1;
+}
+
+// Request for getting segments
+message GetAudioSegmentsRequest {
+    string recording_id = 1;
+}
+
+// Response containing segments
+message GetAudioSegmentsResponse {
+    repeated AudioSegment segments = 1;
+}
+
+// Single audio segment
+// Changed to double for start_time and end_time
+message AudioSegment {
+    string recording_id = 1;
+    double start_time = 2;
+    double end_time = 3;
+    string transcript = 4;
+    string label = 5; // Added label field
+}
+
+// Request for streaming audio
+message AudioRequest {
+    string recording_id = 1;
+}
+
+// Response containing audio chunks
+message AudioResponse {
+    bytes chunk = 1;
+}
+
+// Request to update segment labels
+message UpdateSegmentLabelsRequest {
+    string recording_id = 1;
+    repeated AudioSegment segments = 2; // Send segments with updated labels
+}
+
+// Response for updating segment labels (currently empty)
+message UpdateSegmentLabelsResponse {
+    bool success = 1;
+    string message = 2;
+}

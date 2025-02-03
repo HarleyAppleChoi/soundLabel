@@ -1,30 +1,34 @@
 "use server"
 import { NextRequest, NextResponse } from 'next/server';
-import * as protobuf from 'protobufjs';
-import * as grpc from '@grpc/grpc-js';
-import * as protoLoader from '@grpc/proto-loader'
-import * as path from 'path';
-import * as fs from 'fs';
 import type { AudioSegment } from '@/types/audio';
 import { UpdateSegmentLabelsRequest } from '@/proto/audio';
+import client from '../../utils/grpcClient';
 
-// Load the proto file
-
+/**
+ * 
+ * @param request recording ID and segments labels to update
+ * @returns success if successful
+ */
 export async function POST(request: NextRequest) {
   try {
     const { recordingId, segments } = await request.json() as { recordingId: string, segments: AudioSegment[] };
-    const pd = protoLoader.loadSync(process.cwd() + '/../backend/proto/audio.proto');
-    const protoDescriptor = grpc.loadPackageDefinition(pd) ;    
-    const AudioService = (protoDescriptor as any).audio.AudioService;
-    const client = new AudioService("localhost:50051", grpc.credentials.createInsecure());
-    client.UpdateSegmentLabels({ recordingId: recordingId, segments: segments } as UpdateSegmentLabelsRequest, (err: any, response: any) => {
-      if (err){
-        return NextResponse.json({ error: 'Failed to update segment labels' }, { status: 500 });
-      }else{
-        console.log(response);
-        return NextResponse.json({ success: true });
-      }
-    })
+
+    if (!recordingId || !segments) {
+      return NextResponse.json({ error: 'Recording ID and segments are required' }, { status: 400 });
+    }
+
+    const grpcClient = client.getClient();
+
+    const submit =  new Promise((resolve, reject) => {
+      grpcClient.UpdateSegmentLabels({ recordingId: recordingId, segments: segments } as UpdateSegmentLabelsRequest, (err: any, response: any) => {
+        if (err) {
+        reject(new Error('Failed to update segment labels'));
+        } else {
+        resolve(response);
+        }
+      });
+      });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error processing request:', error);

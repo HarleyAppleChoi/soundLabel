@@ -6,6 +6,8 @@ interface context {
     setSubmitted: Dispatch<SetStateAction<boolean>>;
     queue: string[];
     setQueue: Dispatch<SetStateAction<string[]>>;
+    queueSize: number;
+    setQueueSize: Dispatch<SetStateAction<number>>;
 }
 
 interface SubmittedContextType {
@@ -22,11 +24,14 @@ interface SubmittedContextProviderProps {
 const SubmittedContextProvider = ({ children }: SubmittedContextProviderProps) => {
   const [submitted, setSubmitted] = useState<boolean>(false);
     const [queue, setQueue] = useState<string[]>([]);
+    const [queueSize, setQueueSize] = useState<number>(0);
     const context = {
         submitted,
         setSubmitted,
         queue,
-        setQueue
+        setQueue,
+        queueSize,
+        setQueueSize
     };
 
   return (

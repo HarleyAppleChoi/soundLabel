@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import { PlayArrow, Pause, Stop } from '@mui/icons-material';
 import axios from 'axios';
+import { useAlertBar } from '@/hooks/useAlertBar';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 interface AudioPlayerProps {
@@ -33,6 +34,7 @@ export default function AudioPlayer({ recordingId ,afterSubmit }: AudioPlayerPro
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const {setAlertBarProps} = useAlertBar()
 
   const {
     wavesurfer,
@@ -102,6 +104,15 @@ export default function AudioPlayer({ recordingId ,afterSubmit }: AudioPlayerPro
   };
 
   const submitLabels = async () => {
+    const hasEmptyLabel = segments.some(segment => segment.label === '');
+    if (hasEmptyLabel) {
+      setAlertBarProps({
+        message: 'Please label all segments before submitting.',
+        severity: 'warning'
+      });
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       const response = await axios.post(`${API_BASE_URL}/api/segments/labels`, {
