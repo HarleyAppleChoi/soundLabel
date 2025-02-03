@@ -34,7 +34,6 @@ export default function AudioPlayer({ recordingId ,afterSubmit }: AudioPlayerPro
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {setAlertBarProps} = useAlertBar()
 
   const {
     wavesurfer,
@@ -106,10 +105,7 @@ export default function AudioPlayer({ recordingId ,afterSubmit }: AudioPlayerPro
   const submitLabels = async () => {
     const hasEmptyLabel = segments.some(segment => segment.label === '');
     if (hasEmptyLabel) {
-      setAlertBarProps({
-        message: 'Please label all segments before submitting.',
-        severity: 'warning'
-      });
+      alert('Please label all segments before submitting.');
       return;
     }
 
