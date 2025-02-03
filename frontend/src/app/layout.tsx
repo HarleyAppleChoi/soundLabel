@@ -2,9 +2,13 @@ import { Container } from '@mui/material';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { Metadata } from 'next';
 import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 import { SITE_CONFIG } from '@/constants';
 import { GLOBAL_STYLES } from '@/styles';
+import { SubmittedContextProvider } from '@/constants/SubmittedContext';
 
 // !STARTERCONF Change these default meta
 // !STARTERCONF Look at @/constant/config to change them
@@ -54,7 +58,17 @@ export default function RootLayout({
     <html lang='en'>
       <GlobalStyles styles={GLOBAL_STYLES} />
       <body>
-        <Container sx={{ pl: 0, pr: 0 }}>{children}</Container>
+      <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6" component="div">
+                Annotation Tool
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        <SubmittedContextProvider>
+        <Container sx={{ pl: 0, pr: 0 }}>
+          {children}</Container>
+        </SubmittedContextProvider>
       </body>
     </html>
   );

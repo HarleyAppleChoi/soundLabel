@@ -51,7 +51,9 @@ export const useWavesurfer = ({
     wavesurfer.on('finish', () => setIsPlaying(false));
 
     return () => {
-      wavesurfer.destroy();
+      if (wavesurfer) {
+        wavesurfer.destroy();
+      }
     };
   }, [url, container]);
 

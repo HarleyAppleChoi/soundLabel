@@ -23,10 +23,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 interface AudioPlayerProps {
   recordingId: string;
-  setSubmitted: (submitted: boolean)=>void;
+  afterSubmit: () => void;
 }
 
-export default function AudioPlayer({ recordingId,setSubmitted }: AudioPlayerProps) {
+export default function AudioPlayer({ recordingId ,afterSubmit }: AudioPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [segments, setSegments] = useState<AudioSegment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -123,7 +123,7 @@ export default function AudioPlayer({ recordingId,setSubmitted }: AudioPlayerPro
       setError(err instanceof Error ? err.message : 'Failed to submit labels');
     } finally {
       setIsSubmitting(false);
-      setSubmitted(true);
+      afterSubmit()
     }
   }
 
